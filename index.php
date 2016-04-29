@@ -3,7 +3,7 @@
 Plugin Name: SJD Settings Page
 Plugin URI: http://sjd.co
 Description: Simple settings page for use on SJD.co
-Version: 0.1
+Version: 1.0
 Author: Samuel Davis
 Author URI: http://sjd.co
 */
@@ -64,39 +64,35 @@ add_action("admin_menu", "add_sjd_settings_menu_item");
 * Register settings fields
 */
 
-/** Display Twitter Element Callback */
-function display_twitter_element() {
-    ?>
-        <input type="text" class="sjd-settings-input" name="twitter_url" id="twitter_url" value="<?php echo get_option('twitter_url'); ?>">
-    <?php
-}
+function display_sjd_input(array $args) {
+    $id = $args['id'];
+    $name = $args['name'];
+    $type = $args['type']; ?>
 
-/** Display Facebook Element Callback */
-function display_facebook_element() {
-    ?>
-        <input type="text" class="sjd-settings-input" name="facebook_url" id="facebook_url" value="<?php echo get_option('facebook_url'); ?>">
-    <?php
-}
+    <input type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" value="<?php echo get_option($id); ?>">
 
-/** Display Phone Number Element Callback */
-function display_phone_number_element() {
-    ?>
-        <input type="phone" name="phone_number" class="sjd-settings-input" id="phone_number" value="<?php echo get_option('phone_number'); ?>">
-    <?php
-}
+<?php }
+
 
 /** Registers form inputs using the above callbacks */
 function display_sjd_settings_fields() {
 
     add_settings_section( "section", "General", null, "theme-options" );
 
-    add_settings_field( "twitter_url", "Twitter URL", "display_twitter_element", "theme-options", "section" );
-    add_settings_field( "facebook_url", "Facebook URL", "display_facebook_element", "theme-options", "section" );
-    add_settings_field( "phone_number", "Phone Number", "display_phone_number_element", "theme-options", "section" );
+    global $setting_fields;
+    $index = 0;
+    foreach ($setting_fields as $field) {
+        $index++;
 
-    register_setting( "section", "twitter_url" );
-    register_setting( "section", "facebook_url" );
-    register_setting( "section", "phone_number" );
+        $args = array(
+            "id" => $field['field_id'],
+            "type" => $field['input_type'],
+            "name" => $field['field_name'],
+        );
+
+        add_settings_field( $field['field_id'], $field['field_name'], 'display_sjd_input', 'theme-options', 'section', $args);
+        register_setting( "section", $field['field_id']);
+    }
 }
 
 /** Hook registering of fields to the admin_init function */

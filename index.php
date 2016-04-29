@@ -69,7 +69,13 @@ function display_sjd_input(array $args) {
     $name = $args['name'];
     $type = $args['type']; ?>
 
-    <input type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" value="<?php echo get_option($id); ?>">
+    <?php if ($type === "textarea"): ?>
+        <textarea type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>"><?php echo get_option($id); ?></textarea>
+    <?php else: ?>
+        <input type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" value="<?php echo get_option($id); ?>">
+    <?php endif; ?>
+
+
 
 <?php }
 

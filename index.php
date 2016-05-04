@@ -73,6 +73,9 @@ function display_sjd_input(array $args) {
         <textarea type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>"><?php echo get_option($id); ?></textarea>
     <?php else: ?>
         <input type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" value="<?php echo get_option($id); ?>">
+        <?php if ($type === "url"): ?>
+            <p class="description">Must begin with http:// or https://</p>
+        <?php endif; ?>
     <?php endif; ?>
 
 

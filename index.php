@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: SJD Settings Page
-Plugin URI: http://sjd.co
+Plugin URI: http://github.com/samjdavis13/sjd-settings
 Description: Simple, customisable settings page.
 Version: 1.1
 Author: Samuel Davis

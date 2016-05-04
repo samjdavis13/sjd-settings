@@ -86,7 +86,7 @@ function display_sjd_input(array $args) {
 /** Registers form inputs using the above callbacks */
 function display_sjd_settings_fields() {
 
-    add_settings_section( "section", "General", null, "theme-options" );
+    add_settings_section( "section", "", null, "theme-options" );
 
     global $setting_fields;
     $index = 0;

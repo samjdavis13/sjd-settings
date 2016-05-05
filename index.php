@@ -67,7 +67,8 @@ add_action("admin_menu", "add_sjd_settings_menu_item");
 function display_sjd_input(array $args) {
     $id = $args['id'];
     $name = $args['name'];
-    $type = $args['type']; ?>
+    $type = $args['type'];
+    $message = $args['message']; ?>
 
     <?php if ($type === "textarea"): ?>
         <textarea type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>"><?php echo get_option($id); ?></textarea>
@@ -75,6 +76,9 @@ function display_sjd_input(array $args) {
         <input type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" value="<?php echo get_option($id); ?>">
         <?php if ($type === "url"): ?>
             <p class="description">Must begin with http:// or https://</p>
+        <?php endif; ?>
+        <?php if ($message !== ""): ?>
+            <p class="description"><?php echo $message; ?></p>
         <?php endif; ?>
     <?php endif; ?>
 
@@ -97,6 +101,7 @@ function display_sjd_settings_fields() {
             "id" => $field['field_id'],
             "type" => $field['input_type'],
             "name" => $field['field_name'],
+            "message" => $field['message']
         );
 
         add_settings_field( $field['field_id'], $field['field_name'], 'display_sjd_input', 'theme-options', 'section', $args);

@@ -94,23 +94,50 @@ function display_sjd_input(array $args) {
 /** Registers form inputs using the above callbacks */
 function display_sjd_settings_fields() {
 
-    add_settings_section( "section", "", null, "theme-options" );
+    // add_settings_section( "section", "", null, "theme-options" );
 
     global $setting_fields;
-    $index = 0;
-    foreach ($setting_fields as $field) {
-        $index++;
 
-        $args = array(
-            "id" => $field['field_id'],
-            "type" => $field['input_type'],
-            "name" => $field['field_name'],
-            "message" => $field['message']
-        );
+    foreach ($setting_fields as $section) {
 
-        add_settings_field( $field['field_id'], $field['field_name'], 'display_sjd_input', 'theme-options', 'section', $args);
-        register_setting( "section", $field['field_id']);
+        $section_name = $section['section_name'];
+        $section_id = str_replace( ' ', '_', strtolower($section_name));
+
+        add_settings_section( $section_id, $section_name, null, "theme-options" );
     }
+
+    foreach ($setting_fields as $section) {
+        $section_name = $section['section_name'];
+        $section_id = str_replace( ' ', '_', strtolower($section_name));
+
+        foreach ($section['fields'] as $field) {
+                $field_id = str_replace( ' ', '_', strtolower($field['field_name']));
+                $args = array(
+                    // "id" => $field['field_id'],
+                    "type" => $field['input_type'],
+                    "name" => $field['field_name'],
+                    "id" => $field_id,
+                    "message" => $field['message']
+                );
+                add_settings_field( $field_id, $field['field_name'], 'display_sjd_input', 'theme-options', $section_id, $args);
+                register_setting( $section_id, $field_id);
+        }
+    }
+
+    // $index = 0;
+    // foreach ($setting_fields as $field) {
+    //     $index++;
+    //
+    //     $args = array(
+    //         "id" => $field['field_id'],
+    //         "type" => $field['input_type'],
+    //         "name" => $field['field_name'],
+    //         "message" => $field['message']
+    //     );
+    //
+    //     add_settings_field( $field['field_id'], $field['field_name'], 'display_sjd_input', 'theme-options', 'section', $args);
+    //     register_setting( "section", $field['field_id']);
+    // }
 }
 
 /** Hook registering of fields to the admin_init function */

@@ -14,19 +14,31 @@ $sjdco_settings = array(
 
 $setting_fields = array(
     array(
-        "field_name"    =>  "Twitter URL",
-        "field_id"      =>  "twitter_url",
-        "input_type"    =>  "text"
+        "section_name"  => "General",
+        "fields"        => array(
+            array(
+                "field_name"    =>  "Phone Number",
+                "input_type"    =>  "tel"
+            ),
+            array(
+                "field_name"    =>  "Facebook URL",
+                "input_type"    =>  "url"
+            ),
+            array(
+                "field_name"    =>  "Youtube URL",
+                "input_type"    =>  "url"
+            ),
+        )
     ),
     array(
-        "field_name"    =>  "Facebook URL",
-        "field_id"      =>  "facebook_url",
-        "input_type"    =>  "text"
-    ),
-    array(
-        "field_name"    =>  "Phone Number",
-        "field_id"      =>  "phone_number",
-        "input_type"    =>  "phone"
+        "section_name"  => "Advanced",
+        "fields"        => array(
+            array(
+                "field_name"    =>  "API Token",
+                "input_type"    =>  "textarea",
+                "message"       =>  "Please do not edit this unless you know what you are doing. Do not share this code with anyone."
+            ),
+        )
     ),
 );
 

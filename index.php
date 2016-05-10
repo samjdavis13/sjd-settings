@@ -41,7 +41,12 @@ function sjd_settings_page() {
             <?php endif; ?>
 
 	        <?php
-	            settings_fields("section");
+                global $setting_fields;
+                foreach ($setting_fields as $section) {
+                    $section_name = $section['section_name'];
+                    $section_id = str_replace( ' ', '_', strtolower($section_name));
+                    settings_fields($section_id);
+                }
 	            do_settings_sections("theme-options");
 	            submit_button();
 	        ?>
@@ -123,21 +128,6 @@ function display_sjd_settings_fields() {
                 register_setting( $section_id, $field_id);
         }
     }
-
-    // $index = 0;
-    // foreach ($setting_fields as $field) {
-    //     $index++;
-    //
-    //     $args = array(
-    //         "id" => $field['field_id'],
-    //         "type" => $field['input_type'],
-    //         "name" => $field['field_name'],
-    //         "message" => $field['message']
-    //     );
-    //
-    //     add_settings_field( $field['field_id'], $field['field_name'], 'display_sjd_input', 'theme-options', 'section', $args);
-    //     register_setting( "section", $field['field_id']);
-    // }
 }
 
 /** Hook registering of fields to the admin_init function */

@@ -3,7 +3,7 @@
 Plugin Name: SJD Settings Page
 Plugin URI: http://github.com/samjdavis13/sjd-settings
 Description: Simple, customisable settings page.
-Version: 1.2
+Version: 2.0
 Author: Samuel Davis
 Author URI: http://sjd.co
 */

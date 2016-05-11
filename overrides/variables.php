@@ -24,10 +24,6 @@ $setting_fields = array(
                 "field_name"    =>  "Facebook URL",
                 "input_type"    =>  "url"
             ),
-            array(
-                "field_name"    =>  "Youtube URL",
-                "input_type"    =>  "url"
-            ),
         )
     ),
     array(

@@ -1,0 +1,30 @@
+{
+    "sjdco_settings": {
+        "page_name": "SJDco Settings",
+        "slug_name": "sjdco-settings"
+    },
+    "setting_fields": [
+        {
+            "section_name": "General",
+            "fields": [
+                {
+                    "field_name": "Phone Number",
+                    "input_type": "tel"
+                },
+                {
+                    "field_name": "Facebook URL",
+                    "input_type": "url"
+                }
+            ]
+        },
+        {
+            "section_name": "Advanced",
+            "fields": [
+                {
+                    "field_name": "API Key",
+                    "input_type": "text"
+                }
+            ]
+        }
+    ]
+}

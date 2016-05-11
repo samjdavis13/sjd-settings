@@ -14,13 +14,16 @@ Author URI: http://sjd.co
 $dir = plugin_dir_path( __FILE__ );
 
 /**
-* Load our variables
+* Get our config variables from variables.json file
 */
-require_once( $dir . "/overrides/variables.php" );
-
-/** Potentially override our variables with user created ones */
-if ( file_exists( get_template_directory() . '/sjd-settings/variables.php' ) ) {
-    require_once( get_template_directory() . '/sjd-settings/variables.php' );
+if ( file_exists( get_template_directory() . '/sjd-settings/variables.json' ) ) {
+    // Read users config file
+    $raw_setting_data = file_get_contents( get_template_directory() . '/sjd-settings/variables.json' );
+    $setting_data = json_decode($raw_setting_data, true);
+} else {
+    // Read default config file
+    $raw_setting_data = file_get_contents( $dir . 'overrides/variables.json', true);
+    $setting_data = json_decode($raw_setting_data, true);
 }
 
 /**
@@ -29,11 +32,11 @@ if ( file_exists( get_template_directory() . '/sjd-settings/variables.php' ) ) {
 
 /** Dislay sjd-settings callback */
 function sjd_settings_page() {
-    global $sjdco_settings;
+    global $setting_data;
     ?>
 	    <div class="wrap">
 
-	    <h1><?php echo $sjdco_settings['page_name']; ?></h1>
+	    <h1><?php echo $setting_data['sjdco_settings']['page_name']; ?></h1>
 	    <form method="post" action="options.php">
 
             <?php if( isset($_GET['settings-updated']) ) : ?>
@@ -41,8 +44,9 @@ function sjd_settings_page() {
             <?php endif; ?>
 
 	        <?php
-                global $setting_fields;
-                foreach ($setting_fields as $section) {
+                // global $setting_data;
+                // var_dump($setting_data);
+                foreach ($setting_data['setting_fields'] as $section) {
                     $section_name = $section['section_name'];
                     $section_id = str_replace( ' ', '_', strtolower($section_name));
                     settings_fields($section_id);
@@ -57,18 +61,16 @@ function sjd_settings_page() {
 
 /** Create menu page using above callback */
 function add_sjd_settings_menu_item() {
-    global $sjdco_settings;
-    add_menu_page( $sjdco_settings["page_name"], $sjdco_settings["page_name"], "manage_options", $sjdco_settings["slug_name"], "sjd_settings_page", null, 3 );
+    global $setting_data;
+    add_menu_page( $setting_data['sjdco_settings']["page_name"], $setting_data['sjdco_settings']["page_name"], "manage_options", $setting_data['sjdco_settings']["slug_name"], "sjd_settings_page", null, 3 );
 }
 
 /** Hook creation of menu page to admin_menu function */
 add_action("admin_menu", "add_sjd_settings_menu_item");
 
-
 /**
 * Register settings fields
 */
-
 function display_sjd_input(array $args) {
     $id = $args['id'];
     $name = $args['name'];
@@ -99,11 +101,11 @@ function display_sjd_input(array $args) {
 /** Registers form inputs using the above callbacks */
 function display_sjd_settings_fields() {
 
-    // add_settings_section( "section", "", null, "theme-options" );
+    // global $setting_fields;
+    global $setting_data;
 
-    global $setting_fields;
-
-    foreach ($setting_fields as $section) {
+    // Create setting sections
+    foreach ($setting_data['setting_fields'] as $section) {
 
         $section_name = $section['section_name'];
         $section_id = str_replace( ' ', '_', strtolower($section_name));
@@ -111,7 +113,8 @@ function display_sjd_settings_fields() {
         add_settings_section( $section_id, $section_name, null, "theme-options" );
     }
 
-    foreach ($setting_fields as $section) {
+    // Add fields to the sections
+    foreach ($setting_data['setting_fields'] as $section) {
         $section_name = $section['section_name'];
         $section_id = str_replace( ' ', '_', strtolower($section_name));
 
@@ -134,11 +137,9 @@ function display_sjd_settings_fields() {
 add_action("admin_init", "display_sjd_settings_fields");
 
 /**
-* Enqueue Scripts and Styles
+* Enqueue Custom Scripts and Styles
 */
 function add_plugin_styles() {
     wp_enqueue_style( "sjd-settings-styles", plugins_url('/css/style.css', __FILE__) );
 }
 add_action('admin_print_styles', 'add_plugin_styles');
-
-?>

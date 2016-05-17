@@ -3,7 +3,7 @@
 Plugin Name: SJD Settings Page
 Plugin URI: http://github.com/samjdavis13/sjd-settings
 Description: Simple, customisable settings page.
-Version: 2.0
+Version: 2.1
 Author: Samuel Davis
 Author URI: http://sjd.co
 */
@@ -44,15 +44,9 @@ function sjd_settings_page() {
             <?php endif; ?>
 
 	        <?php
-                // global $setting_data;
-                // var_dump($setting_data);
-                foreach ($setting_data['setting_fields'] as $section) {
-                    $section_name = $section['section_name'];
-                    $section_id = str_replace( ' ', '_', strtolower($section_name));
-                    settings_fields($section_id);
-                }
-	            do_settings_sections("theme-options");
-	            submit_button();
+                do_settings_sections('theme-options');
+                settings_fields("theme-options");
+                submit_button();
 	        ?>
 	    </form>
 		</div>
@@ -128,7 +122,7 @@ function display_sjd_settings_fields() {
                     "message" => $field['message']
                 );
                 add_settings_field( $field_id, $field['field_name'], 'display_sjd_input', 'theme-options', $section_id, $args);
-                register_setting( $section_id, $field_id);
+                register_setting( 'theme-options', $field_id);
         }
     }
 }

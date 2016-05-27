@@ -114,12 +114,18 @@ function display_sjd_settings_fields() {
 
         foreach ($section['fields'] as $field) {
                 $field_id = str_replace( ' ', '_', strtolower($field['field_name']));
+
+                $message = "";
+                if (array_key_exists('message', $field)) {
+                    $message = $field['message'];
+                }
+
                 $args = array(
                     // "id" => $field['field_id'],
                     "type" => $field['input_type'],
                     "name" => $field['field_name'],
                     "id" => $field_id,
-                    "message" => $field['message']
+                    "message" => $message
                 );
                 add_settings_field( $field_id, $field['field_name'], 'display_sjd_input', 'theme-options', $section_id, $args);
                 register_setting( 'theme-options', $field_id);

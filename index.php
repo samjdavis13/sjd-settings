@@ -143,3 +143,20 @@ function add_plugin_styles() {
     wp_enqueue_style( "sjd-settings-styles", plugins_url('/css/style.css', __FILE__) );
 }
 add_action('admin_print_styles', 'add_plugin_styles');
+
+
+/**
+* Add shortcode for the Plugin
+*
+* Allows for the following use [sjd-settings setting="phone_number"] = 0000 000 000
+*/
+
+function sjd_settings_shortcode($atts) {
+
+    $mergedAtts = shortcode_atts( array(
+        "value" => "phone_number"
+    ), $atts );
+    return get_option($mergedAtts["value"]);
+    
+}
+add_shortcode( $setting_data['sjdco_settings']['slug_name'], 'sjd_settings_shortcode' );

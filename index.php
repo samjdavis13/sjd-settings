@@ -69,15 +69,16 @@ function display_sjd_input(array $args) {
     $id = $args['id'];
     $name = $args['name'];
     $type = $args['type'];
-    $message = $args['message']; ?>
+    $message = $args['message'];
+    $readonly = $args['readonly']; ?>
 
     <?php if ($type === "textarea"): ?>
 
-        <textarea type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>"><?php echo get_option($id); ?></textarea>
+        <textarea type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" <?php if ($readonly) echo "readonly"; ?><?php echo get_option($id); ?></textarea>
 
     <?php else: ?>
 
-        <input type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" value="<?php echo get_option($id); ?>">
+        <input type="<?php echo $type ?>" name="<?php echo $id ?>" class="sjd-settings-input" id="<?php echo $id ?>" value="<?php echo get_option($id); ?>" <?php if ($readonly) echo "readonly"; ?>
 
         <?php if ($type === "url"): ?>
             <p class="description">Must begin with http:// or https://</p>
@@ -119,13 +120,18 @@ function display_sjd_settings_fields() {
                 if (array_key_exists('message', $field)) {
                     $message = $field['message'];
                 }
+                $readonly = "";
+                if (array_key_exists('readonly', $field)) {
+                    $readonly = $field['readonly'];
+                }
 
                 $args = array(
                     // "id" => $field['field_id'],
                     "type" => $field['input_type'],
                     "name" => $field['field_name'],
                     "id" => $field_id,
-                    "message" => $message
+                    "message" => $message,
+                    "readonly" => $readonly,
                 );
                 add_settings_field( $field_id, $field['field_name'], 'display_sjd_input', 'theme-options', $section_id, $args);
                 register_setting( 'theme-options', $field_id);
@@ -157,6 +163,6 @@ function sjd_settings_shortcode($atts) {
         "value" => "phone_number"
     ), $atts );
     return get_option($mergedAtts["value"]);
-    
+
 }
 add_shortcode( $setting_data['sjdco_settings']['slug_name'], 'sjd_settings_shortcode' );
